@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="styleBottomButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:fontFamily">sanf-serif</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:typeface">normal</item>
+    </style>
+
 </resources>
