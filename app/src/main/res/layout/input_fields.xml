@@ -74,7 +74,7 @@
             android:id="@+id/own_home"
             android:layout_height="60dp"
             android:layout_width="match_parent"
-            layout="@layout/input_item"/>
+            layout="@layout/optional_item"/>
 
         <include
             android:id="@+id/home_phone"
@@ -92,13 +92,13 @@
             android:id="@+id/military"
             android:layout_height="60dp"
             android:layout_width="match_parent"
-            layout="@layout/input_item"/>
+            layout="@layout/optional_item"/>
 
         <include
             android:id="@+id/time_to_call"
             android:layout_height="60dp"
             android:layout_width="match_parent"
-            layout="@layout/input_item"/>
+            layout="@layout/optional_item"/>
 
         <include
             android:id="@+id/employer"
@@ -140,7 +140,7 @@
             android:id="@+id/pay_frequency"
             android:layout_height="60dp"
             android:layout_width="match_parent"
-            layout="@layout/input_item"/>
+            layout="@layout/optional_item"/>
 
         <include
             android:id="@+id/driver_license"
@@ -182,13 +182,13 @@
             android:id="@+id/bank_account_type"
             android:layout_height="60dp"
             android:layout_width="match_parent"
-            layout="@layout/input_item"/>
+            layout="@layout/optional_item"/>
 
         <include
             android:id="@+id/direct_deposit"
             android:layout_height="60dp"
             android:layout_width="match_parent"
-            layout="@layout/input_item"/>
+            layout="@layout/optional_item"/>
 
         <include
             android:id="@+id/ssn"
@@ -202,11 +202,11 @@
             android:layout_width="match_parent"
             layout="@layout/input_item"/>
 
-        <includ
+        <include
             android:id="@+id/income_type"
             android:layout_height="60dp"
             android:layout_width="match_parent"
-            layout="@layout/input_item"/>
+            layout="@layout/optional_item"/>
 
         <Button
             android:id="@+id/next"

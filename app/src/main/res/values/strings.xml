@@ -1,3 +1,43 @@
 <resources>
     <string name="app_name">PayDay</string>
+
+    <string-array name="time_to_call_list">
+        <item>ANYTIME</item>
+        <item>MORNING</item>
+        <item>AFTERNOON</item>
+        <item>EVENING</item>
+    </string-array>
+
+    <string-array name="pay_frequencies">
+        <item>WEEKLY</item>
+        <item>BIWEEKLY</item>
+        <item>TWICEMONTHLY</item>
+        <item>MONTHLY</item>
+    </string-array>
+
+    <string-array name="bank_account_types">
+        <item>CHECKING</item>
+        <item>SAVING</item>
+    </string-array>
+
+    <string-array name="income_types">
+        <item>EMPLOYMENT</item>
+        <item>BENEFITS</item>
+    </string-array>
+
+    <string-array name="military_status">
+        <item>ACTIVE</item>
+        <item>NOT ACTIVE</item>
+    </string-array>
+
+    <string-array name="residence_status">
+        <item>OWN</item>
+        <item>RENT</item>
+    </string-array>
+
+    <string-array name="deposit_status">
+        <item>DIRECT</item>
+        <item>NON DIRECT</item>
+    </string-array>
+
 </resources>

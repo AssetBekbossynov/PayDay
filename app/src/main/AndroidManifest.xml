@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="kz.assetbekbossynov.payday">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:appComponentFactory="node"
@@ -12,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="eee373e21cba90ecc2361b5e13a255d849b5b3ec"
+            />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
