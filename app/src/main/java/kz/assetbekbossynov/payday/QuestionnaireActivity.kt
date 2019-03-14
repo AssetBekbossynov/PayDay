@@ -1,6 +1,7 @@
 package kz.assetbekbossynov.payday
 
 import android.app.AlertDialog
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
@@ -14,6 +15,8 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.input_fields.*
+import retrofit2.Response
+import com.redmadrobot.inputmask.MaskedTextChangedListener
 import java.util.*
 import kotlinx.android.synthetic.main.input_fields.zip as zipInput
 import kotlinx.android.synthetic.main.input_fields.state as stateInput
@@ -23,6 +26,14 @@ import kotlinx.android.synthetic.main.input_fields.email as emailInput
 import kotlinx.android.synthetic.main.input_fields.military as militaryInput
 import kotlinx.android.synthetic.main.input_fields.employer as employerInput
 import kotlinx.android.synthetic.main.input_fields.ssn as ssnInput
+import kotlinx.android.synthetic.main.toolbar.title as titleLayout
+import android.text.format.Formatter.formatIpAddress
+import android.net.wifi.WifiManager
+import android.text.format.Formatter
+import android.util.Log
+import com.crashlytics.android.Crashlytics
+import kotlinx.android.synthetic.main.toolbar.*
+
 
 class QuestionnaireActivity : AppCompatActivity() {
 
@@ -105,10 +116,25 @@ class QuestionnaireActivity : AppCompatActivity() {
     internal var dialog: AlertDialog? = null
     internal var adapter: DialogListAdapter? = null
 
+    var session_id: String = "f6ove66srpslo9o08ii6mko6h5"
+    var referrer: String = "test"
+    var domain: String = "example.com"
+    var user_agent: String = "Mozilla/5.0+%28Windows+NT+6.1;+WOW64;+rv:26.0%29+Gecko/20100101+Firefox/26.0"
+    var client_ip_address: String = "66.87.144.180"
+    var affiliate_id: String = "5381"
+    var api_key: String = "2f3d359d64ebdcbcb0a4d406ae79417bA5381"
+    var tier_key: String = "0b54423d79_1"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.input_fields)
+
+        titleLayout.text = "Questionnaire"
+
+        backbutton.setOnClickListener {
+            onBackPressed()
+        }
 
         timeToCallList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.time_to_call_list)))
         payFrequencyList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.pay_frequencies)))
@@ -118,11 +144,14 @@ class QuestionnaireActivity : AppCompatActivity() {
         militaryStatusList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.military_status)))
         depositStatusList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.deposit_status)))
 
+        val wm = getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
+        client_ip_address = Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
+
         val intent = intent
 
         next.setOnClickListener {
             if(next.isEnabled){
-                Toast.makeText(this, "smth", Toast.LENGTH_SHORT).show()
+                sendData()
             }else{
                 Toast.makeText(this, "All fields must be filled", Toast.LENGTH_SHORT).show()
             }
@@ -170,11 +199,11 @@ class QuestionnaireActivity : AppCompatActivity() {
         firstName.hint = "First name"
         lastName.hint = "Last name"
         zip.hint = "ZIP code"
-        state.hint = "State"
+        state.hint = "State(abbreviation)"
         city.hint = "City"
         address.hint = "Address"
         addressSince.hint = "Address about(month)"
-        birthDate.hint = "Birth date"
+        birthDate.hint = "Birth date(YYYY-MM-DD)"
         email .hint = "Email"
         ownHome.hint = "Residence status"
         homePhone.hint = "Home phone number"
@@ -185,11 +214,11 @@ class QuestionnaireActivity : AppCompatActivity() {
         jobTitle.hint = "Job title"
         employedMonth.hint = "Employed for(month)"
         monthlyIncome.hint = "Monthly income"
-        payDate1.hint = "Pay date 1"
-        payDate2.hint = "Pay date 2"
+        payDate1.hint = "Pay date 1(YYYY-MM-DD)"
+        payDate2.hint = "Pay date 2(YYYY-MM-DD)"
         payFrequency.hint = "Pay frequency"
         driversLicense.hint = "Drivers license number"
-        driversLicenseState.hint = "Drivers license state"
+        driversLicenseState.hint = "Drivers license state(abbreviation)"
         bankName.hint = "Bank name"
         bankPhone.hint = "Bank phone number"
         bankAba.hint = "Bank ABA"
@@ -205,13 +234,13 @@ class QuestionnaireActivity : AppCompatActivity() {
         lastName.editText?.inputType = InputType.TYPE_CLASS_TEXT and InputType.TYPE_TEXT_FLAG_MULTI_LINE.inv() or InputType.TYPE_TEXT_FLAG_CAP_WORDS
         zip.editText?.inputType = InputType.TYPE_CLASS_NUMBER
         addressSince.editText?.inputType = InputType.TYPE_CLASS_NUMBER
-        state.editText?.inputType = InputType.TYPE_CLASS_TEXT and InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+        state.editText?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
         email.editText?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         homePhone.editText?.inputType = InputType.TYPE_CLASS_PHONE
         workPhone.editText?.inputType = InputType.TYPE_CLASS_PHONE
         employedMonth.editText?.inputType = InputType.TYPE_CLASS_NUMBER
         monthlyIncome.editText?.inputType = InputType.TYPE_CLASS_NUMBER
-        driversLicenseState.editText?.inputType = InputType.TYPE_CLASS_TEXT and InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+        driversLicenseState.editText?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
         bankPhone.editText?.inputType = InputType.TYPE_CLASS_PHONE
 
         firstName.editText?.filters = createMaxLengthFilter(128)
@@ -220,6 +249,56 @@ class QuestionnaireActivity : AppCompatActivity() {
         state.editText?.filters = createMaxLengthFilter(2)
         driversLicenseState.editText?.filters = createMaxLengthFilter(2)
         bankAba.editText?.filters = createMaxLengthFilter(9)
+        addressSince.editText?.filters = createMaxLengthFilter(3)
+        employedMonth.editText?.filters = createMaxLengthFilter(2)
+
+        birthDate.editText?.let {
+            it.addTextChangedListener(MaskedTextChangedListener(
+                    "[0000]-[00]-[00]",
+                    true,
+                    it, null, null
+            ))
+        }
+
+        payDate1.editText?.let {
+            it.addTextChangedListener(MaskedTextChangedListener(
+                    "[0000]-[00]-[00]",
+                    true,
+                    it, null, null
+            ))
+        }
+
+        payDate2.editText?.let {
+            it.addTextChangedListener(MaskedTextChangedListener(
+                    "[0000]-[00]-[00]",
+                    true,
+                    it, null, null
+            ))
+        }
+
+        homePhone.editText?.let {
+            it.addTextChangedListener(MaskedTextChangedListener(
+                    "([000]) [000] [0000]",
+                    true,
+                    it, null, null
+            ))
+        }
+
+        workPhone.editText?.let {
+            it.addTextChangedListener(MaskedTextChangedListener(
+                    "([000]) [000] [0000]",
+                    true,
+                    it, null, null
+            ))
+        }
+
+        bankPhone.editText?.let {
+            it.addTextChangedListener(MaskedTextChangedListener(
+                    "([000]) [000] [0000]",
+                    true,
+                    it, null, null
+            ))
+        }
 
         val watcher = SingleWatcher()
         requestedAmount.editText?.addTextChangedListener(watcher)
@@ -400,6 +479,69 @@ class QuestionnaireActivity : AppCompatActivity() {
         }
     }
 
+    fun sendData(){
+
+        var residence = ownHome.editText?.text.toString()
+        val rArr = resources.getStringArray(R.array.residence_status)
+        when (residence) {
+            rArr[0] -> residence = "1"
+            rArr[1] -> residence = "0"
+        }
+
+        var militaryStatus = military.editText?.text.toString()
+        val mArr = resources.getStringArray(R.array.military_status)
+        when (militaryStatus) {
+            mArr[0] -> militaryStatus = "1"
+            mArr[1] -> militaryStatus = "0"
+        }
+
+        var depositStatus = directDeposit.editText?.text.toString()
+        val dArr = resources.getStringArray(R.array.deposit_status)
+        when (depositStatus) {
+            dArr[0] -> depositStatus = "1"
+            dArr[1] -> depositStatus = "0"
+        }
+
+        Thread(Runnable {
+            val response: Response<CustomResponse> = APICaller.paydayAPI.createLoan("application/json",
+                    requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
+                    jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
+                    monthlyIncome.editText?.text!!.toString(), payDate1.editText?.text!!.toString(),
+                    payDate2.editText?.text!!.toString(), payFrequency.editText?.text!!.toString(),
+                    driversLicense.editText?.text!!.toString(), driversLicenseState.editText?.text!!.toString(),
+                    bankName.editText?.text!!.toString(), numberClearMask(bankPhone.editText?.text!!.toString()),
+                    bankAba.editText?.text!!.toString(), bankAccount.editText?.text!!.toString(),
+                    bankAccountType.editText?.text!!.toString(), depositStatus,
+                    firstName.editText?.text!!.toString(), lastName.editText?.text!!.toString(),
+                    ssn.editText?.text!!.toString(), birthDate.editText?.text!!.toString(),
+                    residence, address.editText?.text!!.toString(),
+                    city.editText?.text!!.toString(), state.editText?.text!!.toString(),
+                    zip.editText?.text!!.toString(), email.editText?.text!!.toString(),
+                    numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
+                    timeToCall.editText?.text!!.toString(), militaryStatus,
+                    addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
+                    incomeType.editText?.text!!.toString(), session_id, referrer, domain, user_agent,
+                    client_ip_address, affiliate_id, api_key, tier_key).execute()
+            if (response.isSuccessful){
+                val responseBody = response.body()
+                if (responseBody!!.status == "error"){
+                    runOnUiThread {
+                        Crashlytics.log(response.toString())
+                        Toast.makeText(baseContext, responseBody.message, Toast.LENGTH_LONG).show()
+                    }
+                }else if (responseBody.status == "success"){
+                    runOnUiThread {
+                        Toast.makeText(baseContext, "Success", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }else{
+                runOnUiThread {
+                    Toast.makeText(baseContext, "Server error, try again later", Toast.LENGTH_LONG).show()
+                }
+            }
+        }).start()
+    }
+
     private inner class SingleWatcher : TextWatcher {
         override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, after: Int) {}
         override fun onTextChanged(charSequence: CharSequence, i: Int, before: Int, i2: Int) {}
@@ -515,4 +657,16 @@ class QuestionnaireActivity : AppCompatActivity() {
 
     fun createMaxLengthFilter(maxLength : Int): Array<InputFilter> =
             arrayOf(InputFilter.LengthFilter(maxLength))
+
+    protected fun numberClearMask(number : String) : String{
+        val result : MutableList<Char> = ArrayList()
+        val list = number.toList()
+        for (element in list){
+            if(element != '+' && element != ' ' && element != '('
+                    && element != ')' && element != '-') {
+                result.add(element)
+            }
+        }
+        return result.joinToString("")
+    }
 }
