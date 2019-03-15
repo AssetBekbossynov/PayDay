@@ -1,6 +1,8 @@
 package kz.assetbekbossynov.payday
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,12 +10,6 @@ import android.support.design.widget.TextInputLayout
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.InputFilter
-import android.text.InputType
-import android.text.TextWatcher
-import android.widget.EditText
-import android.widget.Toast
 import kotlinx.android.synthetic.main.input_fields.*
 import retrofit2.Response
 import com.redmadrobot.inputmask.MaskedTextChangedListener
@@ -29,10 +25,14 @@ import kotlinx.android.synthetic.main.input_fields.ssn as ssnInput
 import kotlinx.android.synthetic.main.toolbar.title as titleLayout
 import android.text.format.Formatter.formatIpAddress
 import android.net.wifi.WifiManager
+import android.text.*
 import android.text.format.Formatter
 import android.util.Log
+import android.view.ViewGroup
+import android.widget.*
 import com.crashlytics.android.Crashlytics
 import kotlinx.android.synthetic.main.toolbar.*
+import android.view.WindowManager
 
 
 class QuestionnaireActivity : AppCompatActivity() {
@@ -114,6 +114,7 @@ class QuestionnaireActivity : AppCompatActivity() {
     internal lateinit var depositStatusList: ArrayList<String>
 
     internal var dialog: AlertDialog? = null
+    internal var mSplashDialog: Dialog? = null
     internal var adapter: DialogListAdapter? = null
 
     var session_id: String = "f6ove66srpslo9o08ii6mko6h5"
@@ -503,6 +504,9 @@ class QuestionnaireActivity : AppCompatActivity() {
         }
 
         Thread(Runnable {
+            runOnUiThread {
+                showProgressDialog("Sending...")
+            }
             val response: Response<CustomResponse> = APICaller.paydayAPI.createLoan("application/json",
                     requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
                     jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
@@ -527,19 +531,39 @@ class QuestionnaireActivity : AppCompatActivity() {
                 if (responseBody!!.status == "error"){
                     runOnUiThread {
                         Crashlytics.log(response.toString())
+                        dialog?.dismiss()
                         Toast.makeText(baseContext, responseBody.message, Toast.LENGTH_LONG).show()
                     }
                 }else if (responseBody.status == "success"){
                     runOnUiThread {
+                        dialog?.dismiss()
                         Toast.makeText(baseContext, "Success", Toast.LENGTH_LONG).show()
                     }
                 }
             }else{
                 runOnUiThread {
+                    dialog?.dismiss()
                     Toast.makeText(baseContext, "Server error, try again later", Toast.LENGTH_LONG).show()
                 }
             }
         }).start()
+    }
+
+    @SuppressLint("ResourceType")
+    fun showProgressDialog(message: String){
+        if(dialog!=null){
+            dialog?.dismiss()
+        }
+        val builder = AlertDialog.Builder(this)
+        val layoutInflater = layoutInflater
+        val dialogView = layoutInflater.inflate(R.layout.progress_bar_dialog, null)
+        val messageView = dialogView.findViewById<TextView>(R.id.message)
+        messageView.text = message
+        builder.setView(dialogView)
+        builder.setCancelable(false)
+        dialog = builder.create()
+        dialog?.show()
+        dialog?.window?.setLayout(600, 290)
     }
 
     private inner class SingleWatcher : TextWatcher {
