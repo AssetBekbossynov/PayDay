@@ -114,18 +114,10 @@ class QuestionnaireActivity : AppCompatActivity() {
     internal lateinit var depositStatusList: ArrayList<String>
 
     internal var dialog: AlertDialog? = null
-    internal var mSplashDialog: Dialog? = null
     internal var adapter: DialogListAdapter? = null
 
-    var session_id: String = "f6ove66srpslo9o08ii6mko6h5"
-    var referrer: String = "test"
-    var domain: String = "example.com"
-    var user_agent: String = "Mozilla/5.0+%28Windows+NT+6.1;+WOW64;+rv:26.0%29+Gecko/20100101+Firefox/26.0"
-    var client_ip_address: String = "66.87.144.180"
-    var affiliate_id: String = "5381"
-    var api_key: String = "2f3d359d64ebdcbcb0a4d406ae79417bA5381"
-    var tier_key: String = "0b54423d79_1"
-
+    lateinit var client_ip_address: String
+    lateinit var tier_key: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,6 +141,12 @@ class QuestionnaireActivity : AppCompatActivity() {
         client_ip_address = Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
 
         val intent = intent
+
+        if (intent.getStringExtra("btn") == "installment"){
+            tier_key = BuildConfig.TIER_KEY_INST
+        }else if (intent.getStringExtra("btn") == "payday"){
+            tier_key = BuildConfig.TIER_KEY_PD
+        }
 
         next.setOnClickListener {
             if(next.isEnabled){
@@ -203,7 +201,7 @@ class QuestionnaireActivity : AppCompatActivity() {
         state.hint = "State(abbreviation)"
         city.hint = "City"
         address.hint = "Address"
-        addressSince.hint = "Address about(month)"
+        addressSince.hint = "Address duration(month)"
         birthDate.hint = "Birth date(YYYY-MM-DD)"
         email .hint = "Email"
         ownHome.hint = "Residence status"
@@ -225,9 +223,9 @@ class QuestionnaireActivity : AppCompatActivity() {
         bankAba.hint = "Bank ABA"
         bankAccount.hint = "Bank account number"
         bankAccountType.hint = "Bank account type"
-        directDeposit.hint = "Direct deposit?"
+        directDeposit.hint = "Deposit type"
         ssn.hint = "Social security number"
-        bankAccountSince.hint = "Bank account since"
+        bankAccountSince.hint = "Bank account duration(month)"
         incomeType.hint = "Income type"
 
         requestedAmount.editText?.inputType = InputType.TYPE_CLASS_NUMBER
@@ -235,6 +233,7 @@ class QuestionnaireActivity : AppCompatActivity() {
         lastName.editText?.inputType = InputType.TYPE_CLASS_TEXT and InputType.TYPE_TEXT_FLAG_MULTI_LINE.inv() or InputType.TYPE_TEXT_FLAG_CAP_WORDS
         zip.editText?.inputType = InputType.TYPE_CLASS_NUMBER
         addressSince.editText?.inputType = InputType.TYPE_CLASS_NUMBER
+        bankAccountSince.editText?.inputType = InputType.TYPE_CLASS_NUMBER
         state.editText?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
         email.editText?.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         homePhone.editText?.inputType = InputType.TYPE_CLASS_PHONE
@@ -251,6 +250,7 @@ class QuestionnaireActivity : AppCompatActivity() {
         driversLicenseState.editText?.filters = createMaxLengthFilter(2)
         bankAba.editText?.filters = createMaxLengthFilter(9)
         addressSince.editText?.filters = createMaxLengthFilter(3)
+        bankAccountSince.editText?.filters = createMaxLengthFilter(2)
         employedMonth.editText?.filters = createMaxLengthFilter(2)
 
         birthDate.editText?.let {
@@ -524,8 +524,9 @@ class QuestionnaireActivity : AppCompatActivity() {
                     numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
                     timeToCall.editText?.text!!.toString(), militaryStatus,
                     addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
-                    incomeType.editText?.text!!.toString(), session_id, referrer, domain, user_agent,
-                    client_ip_address, affiliate_id, api_key, tier_key).execute()
+                    incomeType.editText?.text!!.toString(), BuildConfig.SESSION_ID, " ", BuildConfig.DOMAIN,
+                    BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
+                    BuildConfig.API_KEY, tier_key).execute()
             if (response.isSuccessful){
                 val responseBody = response.body()
                 if (responseBody!!.status == "error"){

@@ -21,8 +21,27 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+                minifyEnabled false
+                debuggable true
+                buildConfigField "String", "USER_AGENT", '"Mozilla/5.0+%28Windows+NT+6.1;+WOW64;+rv:26.0%29+Gecko/20100101+Firefox/26.0"'
+                buildConfigField "String", "API_KEY", '"2f3d359d64ebdcbcb0a4d406ae79417bA5381"'
+                buildConfigField "String", "TIER_KEY_PD", '"0b54423d79_1"'
+                buildConfigField "String", "TIER_KEY_INST", '"b7fadd47d5_1"'
+                buildConfigField "String", "AFFILIATE_ID", '"5381"'
+                buildConfigField "String", "DOMAIN", '"example.com"'
+                buildConfigField "String", "SESSION_ID", '"f6ove66srpslo9o08ii6mko6h5"'
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            useProguard true
+            buildConfigField "String", "USER_AGENT", '"Mozilla/5.0+%28Windows+NT+6.1;+WOW64;+rv:26.0%29+Gecko/20100101+Firefox/26.0"'
+            buildConfigField "String", "API_KEY", '"2f3d359d64ebdcbcb0a4d406ae79417bA5381"'
+            buildConfigField "String", "TIER_KEY_PD", '"0b54423d79_1"'
+            buildConfigField "String", "TIER_KEY_INST", '"b7fadd47d5_1"'
+            buildConfigField "String", "AFFILIATE_ID", '"5381"'
+            buildConfigField "String", "DOMAIN", '"example.com"'
+            buildConfigField "String", "SESSION_ID", '"f6ove66srpslo9o08ii6mko6h5"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
