@@ -29,6 +29,7 @@ android {
             buildConfigField "String", "TIER_KEY_PD", '"0b54423d79_1"'
             buildConfigField "String", "TIER_KEY_INST", '"b7fadd47d5_1"'
             buildConfigField "String", "AFFILIATE_ID", '"5381"'
+            buildConfigField "String", "IP_ADDRESS", '"66.87.144.180"'
             buildConfigField "String", "DOMAIN", '"example.com"'
             buildConfigField "String", "SESSION_ID", '"f6ove66srpslo9o08ii6mko6h5"'
         }

@@ -135,8 +135,10 @@ class QuestionnaireActivity : AppCompatActivity() {
         militaryStatusList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.military_status)))
         depositStatusList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.deposit_status)))
 
-        val wm = getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
-        client_ip_address = Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
+//        val wm = getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
+//        client_ip_address = Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
+
+        client_ip_address = BuildConfig.IP_ADDRESS
 
         val intent = intent
 
@@ -390,8 +392,8 @@ class QuestionnaireActivity : AppCompatActivity() {
             jobTitle.editText?.setText("Test")
             employedMonth.editText?.setText("3")
             monthlyIncome.editText?.setText("2500")
-            payDate1.editText?.setText("2017-03-14")
-            payDate2.editText?.setText("2017-03-21")
+            payDate1.editText?.setText("2017-03-26")
+            payDate2.editText?.setText("2017-03-29")
             payFrequency.editText?.setText("WEEKLY")
             driversLicense.editText?.setText("A1234567")
             driversLicenseState.editText?.setText("CA")
