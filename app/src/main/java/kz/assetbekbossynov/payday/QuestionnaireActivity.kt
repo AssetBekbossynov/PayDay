@@ -2,7 +2,6 @@ package kz.assetbekbossynov.payday
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -23,16 +22,12 @@ import kotlinx.android.synthetic.main.input_fields.military as militaryInput
 import kotlinx.android.synthetic.main.input_fields.employer as employerInput
 import kotlinx.android.synthetic.main.input_fields.ssn as ssnInput
 import kotlinx.android.synthetic.main.toolbar.title as titleLayout
-import android.text.format.Formatter.formatIpAddress
 import android.net.wifi.WifiManager
 import android.text.*
 import android.text.format.Formatter
-import android.util.Log
-import android.view.ViewGroup
 import android.widget.*
 import com.crashlytics.android.Crashlytics
 import kotlinx.android.synthetic.main.toolbar.*
-import android.view.WindowManager
 
 
 class QuestionnaireActivity : AppCompatActivity() {
@@ -118,6 +113,9 @@ class QuestionnaireActivity : AppCompatActivity() {
 
     lateinit var client_ip_address: String
     lateinit var tier_key: String
+    lateinit var session_id: String
+
+    val source = "abcdefghijklmnopqrstuvwxyz0123456789"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,6 +152,11 @@ class QuestionnaireActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "All fields must be filled", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        session_id = ""
+        for(i in 0..32){
+            session_id += source[Random().nextInt(source.length)].toString()
         }
 
         initializeViews()
@@ -364,6 +367,43 @@ class QuestionnaireActivity : AppCompatActivity() {
 
         direct_deposit.setOnClickListener { selectDepositStatus() }
         directDeposit.editText?.setOnClickListener { selectDepositStatus() }
+
+        fillFields()
+    }
+
+    private fun fillFields(){
+        if (BuildConfig.DEBUG){
+            requestedAmount.editText?.setText("500")
+            firstName.editText?.setText("Will")
+            lastName.editText?.setText("Smith")
+            zip.editText?.setText("91023")
+            state.editText?.setText("CA")
+            city.editText?.setText("Los Angeles")
+            address.editText?.setText("123 Test address")
+            addressSince.editText?.setText("12")
+            birthDate.editText?.setText("1980-06-22")
+            email.editText?.setText("test@example.com")
+            homePhone.editText?.setText("2142288070")
+            workPhone.editText?.setText("4102477840")
+            timeToCall.editText?.setText("ANYTIME")
+            employer.editText?.setText("Test")
+            jobTitle.editText?.setText("Test")
+            employedMonth.editText?.setText("3")
+            monthlyIncome.editText?.setText("2500")
+            payDate1.editText?.setText("2017-03-14")
+            payDate2.editText?.setText("2017-03-21")
+            payFrequency.editText?.setText("WEEKLY")
+            driversLicense.editText?.setText("A1234567")
+            driversLicenseState.editText?.setText("CA")
+            bankName.editText?.setText("JPMORGAN CHASE BANK")
+            bankPhone.editText?.setText("8004460135")
+            bankAba.editText?.setText("101089742")
+            bankAccount.editText?.setText("147565")
+            bankAccountType.editText?.setText("CHECKING")
+            ssn.editText?.setText("123456789")
+            bankAccountSince.editText?.setText("12")
+            incomeType.editText?.setText("EMPLOYMENT")
+        }
     }
 
     private fun selectTimeToCall() {
@@ -524,7 +564,7 @@ class QuestionnaireActivity : AppCompatActivity() {
                     numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
                     timeToCall.editText?.text!!.toString(), militaryStatus,
                     addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
-                    incomeType.editText?.text!!.toString(), BuildConfig.SESSION_ID, " ", BuildConfig.DOMAIN,
+                    incomeType.editText?.text!!.toString(), session_id, " ", BuildConfig.DOMAIN,
                     BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
                     BuildConfig.API_KEY, tier_key).execute()
             if (response.isSuccessful){
