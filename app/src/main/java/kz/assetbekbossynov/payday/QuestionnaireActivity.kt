@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import android.net.ConnectivityManager
 import android.R.string.cancel
 import android.content.DialogInterface
+import io.fabric.sdk.android.Fabric
 
 
 class QuestionnaireActivity : AppCompatActivity() {
@@ -124,6 +125,8 @@ class QuestionnaireActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.input_fields)
+
+        Fabric.with(this, Crashlytics())
 
         titleLayout.text = "Questionnaire"
 
