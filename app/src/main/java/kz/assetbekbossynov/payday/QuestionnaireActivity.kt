@@ -392,8 +392,8 @@ class QuestionnaireActivity : AppCompatActivity() {
             jobTitle.editText?.setText("Test")
             employedMonth.editText?.setText("3")
             monthlyIncome.editText?.setText("2500")
-            payDate1.editText?.setText("2017-03-26")
-            payDate2.editText?.setText("2017-03-29")
+            payDate1.editText?.setText("2019-03-27")
+            payDate2.editText?.setText("2019-03-29")
             payFrequency.editText?.setText("WEEKLY")
             driversLicense.editText?.setText("A1234567")
             driversLicenseState.editText?.setText("CA")
@@ -517,8 +517,10 @@ class QuestionnaireActivity : AppCompatActivity() {
                 bankAccountFilled && bankAccountTypeFilled && directDepositFilled && ssnFilled &&
                 bankAccountSinceFilled && incomeTypeFilled){
             next.isEnabled = true
+            next.setBackgroundColor(resources.getColor(R.color.orange))
         }else{
             next.isEnabled = false
+            next.setBackgroundColor(resources.getColor(R.color.gray))
         }
     }
 
@@ -582,6 +584,11 @@ class QuestionnaireActivity : AppCompatActivity() {
                         dialog?.dismiss()
                         Toast.makeText(baseContext, "Success", Toast.LENGTH_LONG).show()
                     }
+                } else if (responseBody.status == "reject"){
+                    runOnUiThread {
+                        dialog?.dismiss()
+                        Toast.makeText(baseContext, "Loan rejected", Toast.LENGTH_LONG).show()
+                    }
                 }
             }else{
                 runOnUiThread {
@@ -606,7 +613,7 @@ class QuestionnaireActivity : AppCompatActivity() {
         builder.setCancelable(false)
         dialog = builder.create()
         dialog?.show()
-        dialog?.window?.setLayout(600, 290)
+        dialog?.window?.setLayout(600, 275)
     }
 
     private inner class SingleWatcher : TextWatcher {
