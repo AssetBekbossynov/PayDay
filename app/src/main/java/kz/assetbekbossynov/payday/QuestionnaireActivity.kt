@@ -28,6 +28,9 @@ import android.text.format.Formatter
 import android.widget.*
 import com.crashlytics.android.Crashlytics
 import kotlinx.android.synthetic.main.toolbar.*
+import android.net.ConnectivityManager
+import android.R.string.cancel
+import android.content.DialogInterface
 
 
 class QuestionnaireActivity : AppCompatActivity() {
@@ -395,8 +398,8 @@ class QuestionnaireActivity : AppCompatActivity() {
             jobTitle.editText?.setText("Test")
             employedMonth.editText?.setText("3")
             monthlyIncome.editText?.setText("2500")
-            payDate1.editText?.setText("2019-03-27")
-            payDate2.editText?.setText("2019-03-29")
+            payDate1.editText?.setText("2019-03-28")
+            payDate2.editText?.setText("2019-03-30")
             payFrequency.editText?.setText("WEEKLY")
             driversLicense.editText?.setText("A1234567")
             driversLicenseState.editText?.setText("CA")
@@ -549,81 +552,107 @@ class QuestionnaireActivity : AppCompatActivity() {
             dArr[0] -> depositStatus = "1"
             dArr[1] -> depositStatus = "0"
         }
-
-        Thread(Runnable {
-            runOnUiThread {
-                showProgressDialog("Sending...")
-            }
-            lateinit var response: Response<CustomResponse>
-            if (payday){
-                response = APICaller.getPayDayApi().createLoan("application/json",
-                        requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
-                        jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
-                        monthlyIncome.editText?.text!!.toString(), payDate1.editText?.text!!.toString(),
-                        payDate2.editText?.text!!.toString(), payFrequency.editText?.text!!.toString(),
-                        driversLicense.editText?.text!!.toString(), driversLicenseState.editText?.text!!.toString(),
-                        bankName.editText?.text!!.toString(), numberClearMask(bankPhone.editText?.text!!.toString()),
-                        bankAba.editText?.text!!.toString(), bankAccount.editText?.text!!.toString(),
-                        bankAccountType.editText?.text!!.toString(), depositStatus,
-                        firstName.editText?.text!!.toString(), lastName.editText?.text!!.toString(),
-                        ssn.editText?.text!!.toString(), birthDate.editText?.text!!.toString(),
-                        residence, address.editText?.text!!.toString(),
-                        city.editText?.text!!.toString(), state.editText?.text!!.toString(),
-                        zip.editText?.text!!.toString(), email.editText?.text!!.toString(),
-                        numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
-                        timeToCall.editText?.text!!.toString(), militaryStatus,
-                        addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
-                        incomeType.editText?.text!!.toString(), session_id, " ", BuildConfig.DOMAIN,
-                        BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
-                        BuildConfig.API_KEY, tier_key).execute()
-            }else{
-                response = APICaller.getInstallmentApi().createLoan("application/json",
-                        requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
-                        jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
-                        monthlyIncome.editText?.text!!.toString(), payDate1.editText?.text!!.toString(),
-                        payDate2.editText?.text!!.toString(), payFrequency.editText?.text!!.toString(),
-                        driversLicense.editText?.text!!.toString(), driversLicenseState.editText?.text!!.toString(),
-                        bankName.editText?.text!!.toString(), numberClearMask(bankPhone.editText?.text!!.toString()),
-                        bankAba.editText?.text!!.toString(), bankAccount.editText?.text!!.toString(),
-                        bankAccountType.editText?.text!!.toString(), depositStatus,
-                        firstName.editText?.text!!.toString(), lastName.editText?.text!!.toString(),
-                        ssn.editText?.text!!.toString(), birthDate.editText?.text!!.toString(),
-                        residence, address.editText?.text!!.toString(),
-                        city.editText?.text!!.toString(), state.editText?.text!!.toString(),
-                        zip.editText?.text!!.toString(), email.editText?.text!!.toString(),
-                        numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
-                        timeToCall.editText?.text!!.toString(), militaryStatus,
-                        addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
-                        incomeType.editText?.text!!.toString(), session_id, " ", BuildConfig.DOMAIN,
-                        BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
-                        BuildConfig.API_KEY, tier_key).execute()
-            }
-            if (response.isSuccessful){
-                val responseBody = response.body()
-                if (responseBody!!.status == "error"){
-                    runOnUiThread {
-                        Crashlytics.log(response.toString())
-                        dialog?.dismiss()
-                        Toast.makeText(baseContext, responseBody.message, Toast.LENGTH_LONG).show()
-                    }
-                }else if (responseBody.status == "success"){
-                    runOnUiThread {
-                        dialog?.dismiss()
-                        Toast.makeText(baseContext, "Success", Toast.LENGTH_LONG).show()
-                    }
-                } else if (responseBody.status == "reject"){
-                    runOnUiThread {
-                        dialog?.dismiss()
-                        Toast.makeText(baseContext, "Loan rejected", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }else{
+        if (isOnline()){
+            Thread(Runnable {
                 runOnUiThread {
-                    dialog?.dismiss()
-                    Toast.makeText(baseContext, "Server error, try again later", Toast.LENGTH_LONG).show()
+                    showProgressDialog("Sending...")
+                }
+                lateinit var response: Response<CustomResponse>
+                if (payday){
+                    response = APICaller.getPayDayApi().createLoan("application/json",
+                            requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
+                            jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
+                            monthlyIncome.editText?.text!!.toString(), payDate1.editText?.text!!.toString(),
+                            payDate2.editText?.text!!.toString(), payFrequency.editText?.text!!.toString(),
+                            driversLicense.editText?.text!!.toString(), driversLicenseState.editText?.text!!.toString(),
+                            bankName.editText?.text!!.toString(), numberClearMask(bankPhone.editText?.text!!.toString()),
+                            bankAba.editText?.text!!.toString(), bankAccount.editText?.text!!.toString(),
+                            bankAccountType.editText?.text!!.toString(), depositStatus,
+                            firstName.editText?.text!!.toString(), lastName.editText?.text!!.toString(),
+                            ssn.editText?.text!!.toString(), birthDate.editText?.text!!.toString(),
+                            residence, address.editText?.text!!.toString(),
+                            city.editText?.text!!.toString(), state.editText?.text!!.toString(),
+                            zip.editText?.text!!.toString(), email.editText?.text!!.toString(),
+                            numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
+                            timeToCall.editText?.text!!.toString(), militaryStatus,
+                            addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
+                            incomeType.editText?.text!!.toString(), session_id, " ", BuildConfig.DOMAIN,
+                            BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
+                            BuildConfig.API_KEY, tier_key).execute()
+                }else{
+                    response = APICaller.getInstallmentApi().createLoan("application/json",
+                            requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
+                            jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
+                            monthlyIncome.editText?.text!!.toString(), payDate1.editText?.text!!.toString(),
+                            payDate2.editText?.text!!.toString(), payFrequency.editText?.text!!.toString(),
+                            driversLicense.editText?.text!!.toString(), driversLicenseState.editText?.text!!.toString(),
+                            bankName.editText?.text!!.toString(), numberClearMask(bankPhone.editText?.text!!.toString()),
+                            bankAba.editText?.text!!.toString(), bankAccount.editText?.text!!.toString(),
+                            bankAccountType.editText?.text!!.toString(), depositStatus,
+                            firstName.editText?.text!!.toString(), lastName.editText?.text!!.toString(),
+                            ssn.editText?.text!!.toString(), birthDate.editText?.text!!.toString(),
+                            residence, address.editText?.text!!.toString(),
+                            city.editText?.text!!.toString(), state.editText?.text!!.toString(),
+                            zip.editText?.text!!.toString(), email.editText?.text!!.toString(),
+                            numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
+                            timeToCall.editText?.text!!.toString(), militaryStatus,
+                            addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
+                            incomeType.editText?.text!!.toString(), session_id, " ", BuildConfig.DOMAIN,
+                            BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
+                            BuildConfig.API_KEY, tier_key).execute()
+                }
+                if (response.isSuccessful){
+                    val responseBody = response.body()
+                    if (responseBody!!.status == "error"){
+                        runOnUiThread {
+                            Crashlytics.log(response.toString())
+                            dialog?.dismiss()
+                            Toast.makeText(baseContext, responseBody.message, Toast.LENGTH_LONG).show()
+                        }
+                    }else if (responseBody.status == "success"){
+                        runOnUiThread {
+                            dialog?.dismiss()
+                            Toast.makeText(baseContext, "Success", Toast.LENGTH_LONG).show()
+                        }
+                    } else if (responseBody.status == "reject"){
+                        runOnUiThread {
+                            dialog?.dismiss()
+                            Toast.makeText(baseContext, "Loan rejected", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }else{
+                    runOnUiThread {
+                        dialog?.dismiss()
+                        Toast.makeText(baseContext, "Server error, try again later", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }).start()
+        }else{
+            val builder1 = AlertDialog.Builder(this)
+            builder1.setMessage("Turn on your Internet connection in order to continue")
+            builder1.setCancelable(true)
+
+            builder1.setPositiveButton(
+                    "Ok"
+            ) { dialog, id -> dialog.cancel() }
+
+            val alert11 = builder1.create()
+
+            alert11?.setOnShowListener {
+                this.let {
+                    ctx -> ContextCompat.getColor(ctx, R.color.orange)
+                }.let {
+                    color -> alert11.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(color)
                 }
             }
-        }).start()
+
+            alert11.show()
+        }
+    }
+
+    fun isOnline(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnectedOrConnecting
     }
 
     @SuppressLint("ResourceType")
