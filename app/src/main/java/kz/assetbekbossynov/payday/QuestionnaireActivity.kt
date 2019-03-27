@@ -114,6 +114,7 @@ class QuestionnaireActivity : AppCompatActivity() {
     lateinit var client_ip_address: String
     lateinit var tier_key: String
     lateinit var session_id: String
+    internal var payday = false
 
     val source = "abcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -144,8 +145,10 @@ class QuestionnaireActivity : AppCompatActivity() {
 
         if (intent.getStringExtra("btn") == "installment"){
             tier_key = BuildConfig.TIER_KEY_INST
+            payday = false
         }else if (intent.getStringExtra("btn") == "payday"){
             tier_key = BuildConfig.TIER_KEY_PD
+            payday = true
         }
 
         next.setOnClickListener {
@@ -551,26 +554,50 @@ class QuestionnaireActivity : AppCompatActivity() {
             runOnUiThread {
                 showProgressDialog("Sending...")
             }
-            val response: Response<CustomResponse> = APICaller.paydayAPI.createLoan("application/json",
-                    requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
-                    jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
-                    monthlyIncome.editText?.text!!.toString(), payDate1.editText?.text!!.toString(),
-                    payDate2.editText?.text!!.toString(), payFrequency.editText?.text!!.toString(),
-                    driversLicense.editText?.text!!.toString(), driversLicenseState.editText?.text!!.toString(),
-                    bankName.editText?.text!!.toString(), numberClearMask(bankPhone.editText?.text!!.toString()),
-                    bankAba.editText?.text!!.toString(), bankAccount.editText?.text!!.toString(),
-                    bankAccountType.editText?.text!!.toString(), depositStatus,
-                    firstName.editText?.text!!.toString(), lastName.editText?.text!!.toString(),
-                    ssn.editText?.text!!.toString(), birthDate.editText?.text!!.toString(),
-                    residence, address.editText?.text!!.toString(),
-                    city.editText?.text!!.toString(), state.editText?.text!!.toString(),
-                    zip.editText?.text!!.toString(), email.editText?.text!!.toString(),
-                    numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
-                    timeToCall.editText?.text!!.toString(), militaryStatus,
-                    addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
-                    incomeType.editText?.text!!.toString(), session_id, " ", BuildConfig.DOMAIN,
-                    BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
-                    BuildConfig.API_KEY, tier_key).execute()
+            lateinit var response: Response<CustomResponse>
+            if (payday){
+                response = APICaller.getPayDayApi().createLoan("application/json",
+                        requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
+                        jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
+                        monthlyIncome.editText?.text!!.toString(), payDate1.editText?.text!!.toString(),
+                        payDate2.editText?.text!!.toString(), payFrequency.editText?.text!!.toString(),
+                        driversLicense.editText?.text!!.toString(), driversLicenseState.editText?.text!!.toString(),
+                        bankName.editText?.text!!.toString(), numberClearMask(bankPhone.editText?.text!!.toString()),
+                        bankAba.editText?.text!!.toString(), bankAccount.editText?.text!!.toString(),
+                        bankAccountType.editText?.text!!.toString(), depositStatus,
+                        firstName.editText?.text!!.toString(), lastName.editText?.text!!.toString(),
+                        ssn.editText?.text!!.toString(), birthDate.editText?.text!!.toString(),
+                        residence, address.editText?.text!!.toString(),
+                        city.editText?.text!!.toString(), state.editText?.text!!.toString(),
+                        zip.editText?.text!!.toString(), email.editText?.text!!.toString(),
+                        numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
+                        timeToCall.editText?.text!!.toString(), militaryStatus,
+                        addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
+                        incomeType.editText?.text!!.toString(), session_id, " ", BuildConfig.DOMAIN,
+                        BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
+                        BuildConfig.API_KEY, tier_key).execute()
+            }else{
+                response = APICaller.getInstallmentApi().createLoan("application/json",
+                        requestedAmount.editText?.text!!.toString(), employer.editText?.text!!.toString(),
+                        jobTitle.editText?.text!!.toString(), employedMonth.editText?.text!!.toString(),
+                        monthlyIncome.editText?.text!!.toString(), payDate1.editText?.text!!.toString(),
+                        payDate2.editText?.text!!.toString(), payFrequency.editText?.text!!.toString(),
+                        driversLicense.editText?.text!!.toString(), driversLicenseState.editText?.text!!.toString(),
+                        bankName.editText?.text!!.toString(), numberClearMask(bankPhone.editText?.text!!.toString()),
+                        bankAba.editText?.text!!.toString(), bankAccount.editText?.text!!.toString(),
+                        bankAccountType.editText?.text!!.toString(), depositStatus,
+                        firstName.editText?.text!!.toString(), lastName.editText?.text!!.toString(),
+                        ssn.editText?.text!!.toString(), birthDate.editText?.text!!.toString(),
+                        residence, address.editText?.text!!.toString(),
+                        city.editText?.text!!.toString(), state.editText?.text!!.toString(),
+                        zip.editText?.text!!.toString(), email.editText?.text!!.toString(),
+                        numberClearMask(homePhone.editText?.text!!.toString()), numberClearMask(workPhone.editText?.text!!.toString()),
+                        timeToCall.editText?.text!!.toString(), militaryStatus,
+                        addressSince.editText?.text!!.toString(), bankAccountSince.editText?.text!!.toString(),
+                        incomeType.editText?.text!!.toString(), session_id, " ", BuildConfig.DOMAIN,
+                        BuildConfig.USER_AGENT, client_ip_address, BuildConfig.AFFILIATE_ID,
+                        BuildConfig.API_KEY, tier_key).execute()
+            }
             if (response.isSuccessful){
                 val responseBody = response.body()
                 if (responseBody!!.status == "error"){

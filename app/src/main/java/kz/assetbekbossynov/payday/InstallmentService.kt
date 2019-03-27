@@ -12,7 +12,7 @@ interface InstallmentService {
                    @Query("requested_amount") requestedAmount: String,
                    @Query("employer") employer: String,
                    @Query("job_title") job_title: String,
-                   @Query("employed_month") employed_month: String,
+                   @Query("employed_months") employed_month: String,
                    @Query("monthly_income") monthly_income: String,
                    @Query("pay_date1") pay_date1: String,
                    @Query("pay_date2") pay_date2: String,
