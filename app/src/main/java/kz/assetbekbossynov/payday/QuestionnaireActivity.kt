@@ -143,10 +143,10 @@ class QuestionnaireActivity : AppCompatActivity() {
         militaryStatusList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.military_status)))
         depositStatusList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.deposit_status)))
 
-//        val wm = getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
-//        client_ip_address = Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
+        val wm = getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
+        client_ip_address = Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
 
-        client_ip_address = BuildConfig.IP_ADDRESS
+//        client_ip_address = BuildConfig.IP_ADDRESS
 
         val intent = intent
 
@@ -380,7 +380,7 @@ class QuestionnaireActivity : AppCompatActivity() {
         direct_deposit.setOnClickListener { selectDepositStatus() }
         directDeposit.editText?.setOnClickListener { selectDepositStatus() }
 
-        fillFields()
+//        fillFields()
     }
 
     private fun fillFields(){
