@@ -221,6 +221,54 @@
                 android:layout_width="match_parent"
                 layout="@layout/optional_item"/>
 
+            <include
+                android:id="@+id/rates"
+                layout="@layout/expandable_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/terms"
+                layout="@layout/expandable_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/privacy"
+                layout="@layout/expandable_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/econsent"
+                layout="@layout/expandable_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/responsible"
+                layout="@layout/expandable_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/marketing"
+                layout="@layout/expandable_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/faq"
+                layout="@layout/expandable_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/disclaimer"
+                layout="@layout/expandable_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <Button
                 android:id="@+id/next"
                 style="@style/styleBottomButton"
@@ -232,7 +280,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
-
 
 
         </LinearLayout>

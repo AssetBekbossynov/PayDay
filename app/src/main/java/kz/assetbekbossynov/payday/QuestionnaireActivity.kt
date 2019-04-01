@@ -32,9 +32,10 @@ import android.net.ConnectivityManager
 import android.R.string.cancel
 import android.content.DialogInterface
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.expandable_item.view.*
+import java.io.BufferedReader
 import java.io.IOException
-
-
+import java.io.InputStreamReader
 class QuestionnaireActivity : AppCompatActivity() {
 
     internal lateinit var requestedAmount : TextInputLayout
@@ -121,6 +122,8 @@ class QuestionnaireActivity : AppCompatActivity() {
     lateinit var session_id: String
     internal var payday = false
 
+    var text = ""
+
     val source = "abcdefghijklmnopqrstuvwxyz0123456789"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,6 +172,107 @@ class QuestionnaireActivity : AppCompatActivity() {
         session_id = ""
         for(i in 0..32){
             session_id += source[Random().nextInt(source.length)].toString()
+        }
+
+        rates.div_title.text = "Rates and Fees"
+        terms.div_title.text = "Terms of Use"
+        privacy.div_title.text = "Privacy Policy"
+        econsent.div_title.text = "E-Consent"
+        responsible.div_title.text = "Responsible Lending  Policy"
+        marketing.div_title.text = "Marketing Practices"
+        faq.div_title.text = "FAQ"
+        disclaimer.div_title.text = "Disclaimer and APR Representative "
+
+        if (intent.getStringExtra("btn") == "installment"){
+            rates.info.text = getTextFromFile("ratesinstallment.txt")
+            terms.info.text = getTextFromFile("termsinstallment.txt")
+            privacy.info.text = getTextFromFile("privacyinstallment.txt")
+            econsent.info.text = getTextFromFile("econsentinstallment.txt")
+            responsible.info.text = getTextFromFile("responsibleinstallment.txt")
+            marketing.info.text = getTextFromFile("marketinginstallment.txt")
+            faq.info.text = getTextFromFile("faqinstallment.txt")
+            disclaimer.info.text = getTextFromFile("disclaimerinstallment.txt")
+        }else if (intent.getStringExtra("btn") == "payday"){
+            rates.info.text = getTextFromFile("rates.txt")
+            terms.info.text = getTextFromFile("terms.txt")
+            privacy.info.text = getTextFromFile("privacy.txt")
+            econsent.info.text = getTextFromFile("econsent.txt")
+            responsible.info.text = getTextFromFile("responsible.txt")
+            marketing.info.text = getTextFromFile("marketing.txt")
+            faq.info.text = getTextFromFile("faq.txt")
+            disclaimer.info.text = getTextFromFile("disclaimer.txt")
+        }
+
+        rates.setOnClickListener {
+            rates.div_content.toggle()
+            if (rates.div_content.isExpanded){
+                rates.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up, 0)
+            }else{
+                rates.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down, 0)
+            }
+        }
+
+        terms.setOnClickListener {
+            terms.div_content.toggle()
+            if (terms.div_content.isExpanded){
+                terms.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up, 0)
+            }else{
+                terms.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down, 0)
+            }
+        }
+
+        privacy.setOnClickListener {
+            privacy.div_content.toggle()
+            if (privacy.div_content.isExpanded){
+                privacy.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up, 0)
+            }else{
+                privacy.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down, 0)
+            }
+        }
+
+        econsent.setOnClickListener {
+            econsent.div_content.toggle()
+            if (econsent.div_content.isExpanded){
+                econsent.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up, 0)
+            }else{
+                econsent.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down, 0)
+            }
+        }
+
+        responsible.setOnClickListener {
+            responsible.div_content.toggle()
+            if (responsible.div_content.isExpanded){
+                responsible.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up, 0)
+            }else{
+                responsible.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down, 0)
+            }
+        }
+
+        marketing.setOnClickListener {
+            marketing.div_content.toggle()
+            if (marketing.div_content.isExpanded){
+                marketing.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up, 0)
+            }else{
+                marketing.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down, 0)
+            }
+        }
+
+        faq.setOnClickListener {
+            faq.div_content.toggle()
+            if (faq.div_content.isExpanded){
+                faq.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up, 0)
+            }else{
+                faq.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down, 0)
+            }
+        }
+
+        disclaimer.setOnClickListener {
+            disclaimer.div_content.toggle()
+            if (disclaimer.div_content.isExpanded){
+                disclaimer.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up, 0)
+            }else{
+                disclaimer.div_title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down, 0)
+            }
         }
 
         initializeViews()
@@ -416,6 +520,39 @@ class QuestionnaireActivity : AppCompatActivity() {
             bankAccountSince.editText?.setText("12")
             incomeType.editText?.setText("EMPLOYMENT")
         }
+    }
+
+    fun getTextFromFile(path: String): String {
+
+        var reader: BufferedReader? = null
+
+        try {
+            reader = BufferedReader(
+                    InputStreamReader(assets.open(path)));
+
+            text = reader.readLines().joinToString("\n")
+
+            // do reading, usually loop until end of file reading
+//            var mLine: String = ""
+//
+//            while (mLine != null) {
+//                text.append(mLine)
+//                text.append('\n')
+//                mLine = reader.readLine()
+//            }
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close()
+                } catch (e: IOException) {
+                    //log the exception
+                }
+            }
+        }
+        return text
     }
 
     private fun selectTimeToCall() {
@@ -808,3 +945,5 @@ class QuestionnaireActivity : AppCompatActivity() {
         return result.joinToString("")
     }
 }
+
+
