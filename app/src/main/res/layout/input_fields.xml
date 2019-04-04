@@ -221,6 +221,15 @@
                 android:layout_width="match_parent"
                 layout="@layout/optional_item"/>
 
+            <Button
+                android:id="@+id/next"
+                style="@style/styleBottomButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/main"
+                android:text="Send"
+                android:textColor="@color/white"/>
+
             <include
                 android:id="@+id/rates"
                 layout="@layout/expandable_item"
@@ -268,18 +277,6 @@
                 layout="@layout/expandable_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-            <Button
-                android:id="@+id/next"
-                style="@style/styleBottomButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/orange"
-                android:text="Send"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
 
 
         </LinearLayout>

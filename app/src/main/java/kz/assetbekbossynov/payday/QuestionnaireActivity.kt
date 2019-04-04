@@ -664,7 +664,7 @@ class QuestionnaireActivity : AppCompatActivity() {
                 bankAccountFilled && bankAccountTypeFilled && directDepositFilled && ssnFilled &&
                 bankAccountSinceFilled && incomeTypeFilled){
             next.isEnabled = true
-            next.setBackgroundColor(resources.getColor(R.color.orange))
+            next.setBackgroundColor(resources.getColor(R.color.main))
         }else{
             next.isEnabled = false
             next.setBackgroundColor(resources.getColor(R.color.gray))
