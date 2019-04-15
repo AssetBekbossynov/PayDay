@@ -3,6 +3,7 @@ package kz.assetbekbossynov.payday
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
@@ -29,13 +30,15 @@ import android.widget.*
 import com.crashlytics.android.Crashlytics
 import kotlinx.android.synthetic.main.toolbar.*
 import android.net.ConnectivityManager
-import android.R.string.cancel
-import android.content.DialogInterface
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.CustomEvent
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.expandable_item.view.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+
+
 class QuestionnaireActivity : AppCompatActivity() {
 
     internal lateinit var requestedAmount : TextInputLayout
@@ -123,6 +126,9 @@ class QuestionnaireActivity : AppCompatActivity() {
     internal var payday = false
 
     var text = ""
+    var militaryStatus = ""
+    var residence = ""
+    var depositStatus = ""
 
     val source = "abcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -138,6 +144,11 @@ class QuestionnaireActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        policy.setOnClickListener {
+            val intent = Intent(this, PolicyActivity::class.java)
+            startActivity(intent)
+        }
+
         timeToCallList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.time_to_call_list)))
         payFrequencyList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.pay_frequencies)))
         bankAccountTypeList = ArrayList(Arrays.asList(*resources.getStringArray(R.array.bank_account_types)))
@@ -148,8 +159,6 @@ class QuestionnaireActivity : AppCompatActivity() {
 
         val wm = getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
         client_ip_address = Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
-
-//        client_ip_address = BuildConfig.IP_ADDRESS
 
         val intent = intent
 
@@ -163,6 +172,42 @@ class QuestionnaireActivity : AppCompatActivity() {
 
         next.setOnClickListener {
             if(next.isEnabled){
+                Answers.getInstance().logCustom(CustomEvent("SEND_BTN_" + session_id)
+                        .putCustomAttribute("requestedAmount", requestedAmount.editText?.text!!.toString())
+                        .putCustomAttribute("employer", employer.editText?.text!!.toString())
+                        .putCustomAttribute("jobTitle", jobTitle.editText?.text!!.toString())
+                        .putCustomAttribute("employedMonth", employedMonth.editText?.text!!.toString())
+                        .putCustomAttribute("monthlyIncome", monthlyIncome.editText?.text!!.toString())
+                        .putCustomAttribute("payDate1", payDate1.editText?.text!!.toString())
+                        .putCustomAttribute("payDate2", payDate2.editText?.text!!.toString())
+                        .putCustomAttribute("payFrequency", payFrequency.editText?.text!!.toString())
+                        .putCustomAttribute("driversLicense", driversLicense.editText?.text!!.toString())
+                        .putCustomAttribute("bankName", bankName.editText?.text!!.toString())
+                        .putCustomAttribute("bankPhone", bankPhone.editText?.text!!.toString())
+                        .putCustomAttribute("bankAba", bankAba.editText?.text!!.toString())
+                        .putCustomAttribute("bankAccount", bankAccount.editText?.text!!.toString())
+                        .putCustomAttribute("bankAccountType", bankAccountType.editText?.text!!.toString())
+                        .putCustomAttribute("depositStatus", depositStatus)
+                        .putCustomAttribute("firstName", firstName.editText?.text!!.toString())
+                        .putCustomAttribute("lastName", lastName.editText?.text!!.toString())
+                        .putCustomAttribute("ssn", ssn.editText?.text!!.toString())
+                        .putCustomAttribute("birthDate", birthDate.editText?.text!!.toString())
+                        .putCustomAttribute("residence", residence)
+                        .putCustomAttribute("address", address.editText?.text!!.toString())
+                        .putCustomAttribute("city", city.editText?.text!!.toString())
+                        .putCustomAttribute("state", state.editText?.text!!.toString())
+                        .putCustomAttribute("zip", zip.editText?.text!!.toString())
+                        .putCustomAttribute("email", email.editText?.text!!.toString())
+                        .putCustomAttribute("homePhone", homePhone.editText?.text!!.toString())
+                        .putCustomAttribute("workPhone", workPhone.editText?.text!!.toString())
+                        .putCustomAttribute("timeToCall", timeToCall.editText?.text!!.toString())
+                        .putCustomAttribute("militaryStatus", militaryStatus)
+                        .putCustomAttribute("addressSince", addressSince.editText?.text!!.toString())
+                        .putCustomAttribute("bankAccountSince", bankAccountSince.editText?.text!!.toString())
+                        .putCustomAttribute("incomeType", incomeType.editText?.text!!.toString())
+                        .putCustomAttribute("session_id", session_id)
+                        .putCustomAttribute("client_ip_address", client_ip_address))
+
                 sendData()
             }else{
                 Toast.makeText(this, "All fields must be filled", Toast.LENGTH_SHORT).show()
@@ -673,21 +718,21 @@ class QuestionnaireActivity : AppCompatActivity() {
 
     fun sendData(){
 
-        var residence = ownHome.editText?.text.toString()
+        residence = ownHome.editText?.text.toString()
         val rArr = resources.getStringArray(R.array.residence_status)
         when (residence) {
             rArr[0] -> residence = "1"
             rArr[1] -> residence = "0"
         }
 
-        var militaryStatus = military.editText?.text.toString()
+        militaryStatus = military.editText?.text.toString()
         val mArr = resources.getStringArray(R.array.military_status)
         when (militaryStatus) {
             mArr[0] -> militaryStatus = "1"
             mArr[1] -> militaryStatus = "0"
         }
 
-        var depositStatus = directDeposit.editText?.text.toString()
+        depositStatus = directDeposit.editText?.text.toString()
         val dArr = resources.getStringArray(R.array.deposit_status)
         when (depositStatus) {
             dArr[0] -> depositStatus = "1"
@@ -754,6 +799,7 @@ class QuestionnaireActivity : AppCompatActivity() {
                         }else if (responseBody.status == "success"){
                             runOnUiThread {
                                 dialog?.dismiss()
+                                Answers.getInstance().logCustom(CustomEvent("SUCCESS_" + session_id))
                                 Toast.makeText(baseContext, "Success", Toast.LENGTH_LONG).show()
                             }
                         } else if (responseBody.status == "reject"){

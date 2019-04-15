@@ -37,5 +37,10 @@ class MainActivity : AppCompatActivity() {
 
         rv.adapter = AboutAdapter(list, this)
         rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        privacy.setOnClickListener {
+            val intent = Intent(this, PolicyActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
