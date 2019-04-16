@@ -44,7 +44,7 @@ class PolicyActivity : AppCompatActivity() {
             marketing.info.text = getTextFromFile("marketinginstallment.txt")
             faq.info.text = getTextFromFile("faqinstallment.txt")
             disclaimer.info.text = getTextFromFile("disclaimerinstallment.txt")
-        }else if (intent.getStringExtra("btn") == "payday"){
+        }else{
             rates.info.text = getTextFromFile("rates.txt")
             terms.info.text = getTextFromFile("terms.txt")
             privacy.info.text = getTextFromFile("privacy.txt")
