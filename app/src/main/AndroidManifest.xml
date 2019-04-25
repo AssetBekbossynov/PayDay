@@ -15,18 +15,14 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".PolicyActivity"></activity>
-        <activity
-            android:name=".AboutActivity"
-            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="eee373e21cba90ecc2361b5e13a255d849b5b3ec" />
 
-        <activity
-            android:name=".MainActivity"
+        <activity android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,8 +30,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".QuestionnaireActivity"
+        <activity android:name=".QuestionnaireActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PolicyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AboutActivity"
             android:screenOrientation="portrait" />
     </application>
 

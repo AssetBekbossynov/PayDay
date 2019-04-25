@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main"
+    android:background="@drawable/bg"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/logo"
+        android:src="@drawable/img"
         app:layout_constraintBottom_toTopOf="@+id/textView1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -24,10 +24,14 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
+        android:shadowDx="1"
+        android:shadowDy="-1"
+        android:shadowRadius="50"
         android:text="FIND BEST DEAL FOR LOAN"
         android:textColor="@color/white"
-        android:textSize="15sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/pdloan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -41,7 +45,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/black_transparency"
+        android:background="@color/colorPrimary"
         android:drawableLeft="@drawable/dollar"
         android:drawableRight="@drawable/right"
         android:paddingLeft="8dp"
@@ -63,7 +67,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/black_transparency"
+        android:background="@color/colorPrimary"
         android:drawableLeft="@drawable/wallet"
         android:drawableRight="@drawable/right"
         android:paddingLeft="8dp"
@@ -80,70 +84,54 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:hapticFeedbackEnabled="false"
         android:orientation="horizontal"
         android:overScrollMode="never"
-        android:layout_width="0dp"
-        android:hapticFeedbackEnabled="false"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/privacy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iloan" />
 
-    <TextView
+    <Button
         android:id="@+id/privacy"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Privacy policy"
-        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@color/colorPrimary"
+        android:drawableRight="@drawable/right"
+        android:text="About service"
+        android:textStyle="bold"
+        android:textSize="18sp"
         android:textColor="@color/white"
-        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/about"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv"/>
+
+    <Button
+        android:id="@+id/about"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:drawableRight="@drawable/right"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Privacy policy"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/privacy"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!--<Button-->
-    <!--android:id="@+id/calc"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginEnd="16dp"-->
-    <!--android:layout_marginStart="16dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:background="@color/black_transparency"-->
-    <!--android:drawableLeft="@drawable/calculator"-->
-    <!--android:drawableRight="@drawable/right"-->
-    <!--android:paddingLeft="8dp"-->
-    <!--android:paddingRight="8dp"-->
-    <!--android:text="Loan Calculator"-->
-    <!--android:textAllCaps="false"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="19sp"-->
-    <!--app:layout_constraintBottom_toTopOf="@+id/textView"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="0.5"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/iloan" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/textView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="32dp"-->
-    <!--android:drawableLeft="@drawable/ask"-->
-    <!--android:text="About Service"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="18sp"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintHorizontal_bias="0.5"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/calc" />-->
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/privacy"
+        app:layout_constraintTop_toTopOf="@+id/privacy" />
 
 </android.support.constraint.ConstraintLayout>

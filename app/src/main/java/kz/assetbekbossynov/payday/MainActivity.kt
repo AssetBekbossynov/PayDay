@@ -38,9 +38,16 @@ class MainActivity : AppCompatActivity() {
         rv.adapter = AboutAdapter(list, this)
         rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        privacy.setOnClickListener {
+        about.setOnClickListener {
             val intent = Intent(this, PolicyActivity::class.java)
             startActivity(intent)
         }
+
+        privacy.setOnClickListener {
+            val intent = Intent(this, AboutActivity::class.java)
+            startActivity(intent)
+        }
+
+        textView1.setShadowLayer(5f, -5f, 5f, R.color.black)
     }
 }

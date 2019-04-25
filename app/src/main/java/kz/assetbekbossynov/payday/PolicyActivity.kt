@@ -35,25 +35,16 @@ class PolicyActivity : AppCompatActivity() {
         faq.div_title.text = "FAQ"
         disclaimer.div_title.text = "Disclaimer and APR Representative "
 
-        if (intent.getStringExtra("btn") == "installment"){
-            rates.info.text = getTextFromFile("ratesinstallment.txt")
-            terms.info.text = getTextFromFile("termsinstallment.txt")
-            privacy.info.text = getTextFromFile("privacyinstallment.txt")
-            econsent.info.text = getTextFromFile("econsentinstallment.txt")
-            responsible.info.text = getTextFromFile("responsibleinstallment.txt")
-            marketing.info.text = getTextFromFile("marketinginstallment.txt")
-            faq.info.text = getTextFromFile("faqinstallment.txt")
-            disclaimer.info.text = getTextFromFile("disclaimerinstallment.txt")
-        }else{
-            rates.info.text = getTextFromFile("rates.txt")
-            terms.info.text = getTextFromFile("terms.txt")
-            privacy.info.text = getTextFromFile("privacy.txt")
-            econsent.info.text = getTextFromFile("econsent.txt")
-            responsible.info.text = getTextFromFile("responsible.txt")
-            marketing.info.text = getTextFromFile("marketing.txt")
-            faq.info.text = getTextFromFile("faq.txt")
-            disclaimer.info.text = getTextFromFile("disclaimer.txt")
-        }
+
+        rates.info.text = getTextFromFile("rates.txt")
+        terms.info.text = getTextFromFile("terms.txt")
+        privacy.info.text = getTextFromFile("privacy.txt")
+        econsent.info.text = getTextFromFile("econsent.txt")
+        responsible.info.text = getTextFromFile("responsible.txt")
+        marketing.info.text = getTextFromFile("marketing.txt")
+        faq.info.text = getTextFromFile("faq.txt")
+        disclaimer.info.text = getTextFromFile("disclaimer.txt")
+
 
         rates.setOnClickListener {
             rates.div_content.toggle()

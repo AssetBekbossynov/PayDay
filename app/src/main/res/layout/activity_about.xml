@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:context=".AboutActivity"
+    android:background="@color/main"
     android:orientation="vertical">
 
     <include
@@ -31,7 +32,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:text="@string/what_is_pd"
                 android:textSize="20sp"
@@ -46,7 +47,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="12dp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:text="fsdfsdfadfasdfasdfasfdasfsadfsadfsadfdsafdsafdasfasdfasdfsadfasdfasdfa"
                 app:layout_constraintEnd_toEndOf="parent"
