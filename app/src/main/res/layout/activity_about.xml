@@ -21,17 +21,17 @@
 
 
         <LinearLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/descTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:text="@string/what_is_pd"
@@ -44,12 +44,10 @@
                 android:id="@+id/descContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginTop="12dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:text="fsdfsdfadfasdfasdfasfdasfsadfsadfsadfdsafdsafdasfasdfasdfsadfasdfasdfa"
+                android:text="@string/how_it_works"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
