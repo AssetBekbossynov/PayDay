@@ -3,16 +3,11 @@ package kz.assetbekbossynov.payday
 import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
-import android.view.View
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.android.synthetic.main.toolbar.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import kotlinx.android.synthetic.main.toolbar.title as titleLayout
 
 class AboutActivity : AppCompatActivity() {
@@ -36,7 +31,8 @@ class AboutActivity : AppCompatActivity() {
 
             titleLayout.text = "Additional information"
         }else{
-            descTitle.visibility = View.GONE
+            descTitle.text = getString(R.string.how_it_works_title)
+            descTitle.textSize = 18f
             descContent.text = getString(R.string.how_it_works)
             val step1 = TextView(this)
             val step1Content = TextView(this)
